@@ -30,7 +30,7 @@ jobs:
     steps: 
       # we don't need to checkout repo but I just leave it here for demonstration
       - name: checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: print message
         run: echo "${{ inputs.message-to-print }}"
