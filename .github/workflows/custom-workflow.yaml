@@ -15,13 +15,17 @@ on:
       secret-to-hide: 
         description: "A secret that will be passed to the workflow"
         required: true
+    
+    # and we can output some values from the workflow
+    outputs:
+      workflow-output:
+        description: "The first output string"
+        value: ${{ jobs.emit-output.outputs.output-from-job }}
 
 jobs: 
   print-message:
     runs-on: ubuntu-latest
-
     steps: 
-
       # we don't need to checkout repo but I just leave it here for demonstration
       - name: checkout repo
         uses: actions/checkout@v3
@@ -39,4 +43,16 @@ jobs:
             echo "Secret is not correct"
           fi
             echo 
+
+  emit-output:
+    runs-on: ubuntu-latest
+    # it requires some gymnastics to pass outputs from one job to another
+    outputs:
+      # notice that `greeting` is an ID of step were we take output from
+      # output-var-name - is a variable name where we store output 
+      output-from-job: ${{ steps.greeting.outputs.output-var-name }}
+    steps:
+      - name: Greeting step        
+        id: greeting
+        run: echo "output-var-name=Hi, I'm Reusable Workflow" >> $GITHUB_OUTPUT
       
