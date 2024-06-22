@@ -1,0 +1,42 @@
+name: custom-workflow
+
+on:
+  # `workflow_call` makes this workflow callable from other workflows
+  workflow_call:
+    # parameters that should be passed to the workflow
+    inputs:
+      message-to-print:
+        description: "A message that will be printed in the workflow"
+        required: true
+        type: string
+    
+    # secrets that should be passed to the workflow
+    secrets:
+      secret-to-hide: 
+        description: "A secret that will be passed to the workflow"
+        required: true
+
+jobs: 
+  print-message:
+    runs-on: ubuntu-latest
+
+    steps: 
+
+      # we don't need to checkout repo but I just leave it here for demonstration
+      - name: checkout repo
+        uses: actions/checkout@v3
+
+      - name: print message
+        run: echo "${{ inputs.message-to-print }}"
+                  
+  test-secret:     
+    runs-on: ubuntu-latest
+    steps:                 
+      - run: |
+          if [ "${{ inputs.secret-to-hide }}" == "MY SECRET MESSAGE" ]; then
+            echo "Secret is good"
+          else
+            echo "Secret is not correct"
+          fi
+            echo 
+      
