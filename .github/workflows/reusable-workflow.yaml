@@ -11,8 +11,9 @@ on:
         type: string
     
     # secrets that should be passed to the workflow
-    secrets:
-      secret-to-hide: 
+    secrets:    
+      # Remember that "Secret names can only contain alphanumeric characters ([a-z], [A-Z], [0-9]) or underscores (_). Spaces are not allowed. Must start with a letter ([a-z], [A-Z]) or underscores (_)."
+      secret_to_hide: 
         description: "A secret that will be passed to the workflow"
         required: true
     
@@ -37,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:                 
       - run: |
-          if [ "${{ inputs.secret-to-hide }}" == "MY SECRET MESSAGE" ]; then
+          if [ "${{ inputs.secret_to_hide }}" == "MY SECRET MESSAGE" ]; then
             echo "Secret is good"
           else
             echo "Secret is not correct"
